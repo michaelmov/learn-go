@@ -2,6 +2,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -15,9 +16,16 @@ func main() {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// Respond with {Message: "Hello, World!"}
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprint(w, `{"Message": "Hello, World!"}`)
+
+		// Create an object with a Message property
+		response := map[string]string{
+			"Message": "Hello, World!",
+		}
+
+		// Convert the object to JSON
+		json.NewEncoder(w).Encode(response)
 	})
 
-	fmt.Println("Server is running on http://localhost:3000")
+	fmt.Printf("Server is running on http://localhost%s", port)
 	http.ListenAndServe(port, r)
 }
